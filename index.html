@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GAIA - Biodynamie & Vignoble</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="background-layers">
+        <!-- Carte du ciel en arrière-plan -->
+        <div class="sky-map" id="skyMap"></div>
+        
+        <!-- Lune -->
+        <div class="moon" id="moon"></div>
+        
+        <!-- Rameau de vigne -->
+        <div class="vine-branch" id="vineBranch">
+            <svg viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+                <path d="M100 0 Q120 50 100 100 T100 200 T120 250" 
+                      stroke="#4a7c59" 
+                      stroke-width="3" 
+                      fill="none" 
+                      class="vine-stem"/>
+                <circle cx="80" cy="80" r="8" fill="#8b4513" class="grape"/>
+                <circle cx="120" cy="100" r="8" fill="#8b4513" class="grape"/>
+                <circle cx="90" cy="120" r="8" fill="#8b4513" class="grape"/>
+                <circle cx="110" cy="140" r="8" fill="#8b4513" class="grape"/>
+                <path d="M100 50 Q110 60 105 70" 
+                      stroke="#2d5016" 
+                      stroke-width="2" 
+                      fill="none" 
+                      class="vine-leaf"/>
+                <path d="M100 90 Q115 95 110 105" 
+                      stroke="#2d5016" 
+                      stroke-width="2" 
+                      fill="none" 
+                      class="vine-leaf"/>
+            </svg>
+        </div>
+    </div>
+
+    <div class="container">
+        <div id="screen-start">
+            <div class="gaia-orb" onclick="startGaia()">
+                <span class="gold orb-text">GAIA</span>
+            </div>
+            <p class="subtitle">Harmonie biodynamique pour votre vignoble</p>
+        </div>
+        
+        <div id="screen-recommandations" style="display: none;">
+            <div class="recommandations-header">
+                <h1 class="gold">Vos Recommandations Biodynamiques</h1>
+                <p id="moment-actuel" class="moment-info"></p>
+            </div>
+            
+            <div class="recommandations-content" id="recommandations-content">
+                <!-- Contenu généré dynamiquement -->
+            </div>
+            
+            <div class="btn-group">
+                <button class="btn-primary" onclick="backToStart()">← Retour</button>
+                <button class="btn-discrete" onclick="refreshRecommandations()">🔄 Actualiser</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="gaia.js"></script>
+</body>
+</html>
+

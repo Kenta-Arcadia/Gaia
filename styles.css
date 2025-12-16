@@ -1,0 +1,394 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Cormorant Garamond', serif;
+    background: #0a0a0f;
+    color: #E8DCC4;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Arrière-plan - Carte du ciel */
+.background-layers {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.sky-map {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(100, 150, 200, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(150, 100, 200, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(200, 150, 100, 0.05) 0%, transparent 50%),
+        linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0a0a0f 100%);
+    background-size: 200% 200%;
+    animation: skyDrift 60s ease-in-out infinite;
+    opacity: 0.6;
+}
+
+@keyframes skyDrift {
+    0%, 100% { background-position: 0% 0%; }
+    50% { background-position: 100% 100%; }
+}
+
+/* Lune */
+.moon {
+    position: absolute;
+    top: 15%;
+    right: 15%;
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle at 30% 30%, #f5f5dc, #d4d4aa, #8b8b7a);
+    border-radius: 50%;
+    box-shadow: 
+        0 0 40px rgba(245, 245, 220, 0.3),
+        inset -20px -20px 0 rgba(0, 0, 0, 0.2);
+    animation: moonGlow 8s ease-in-out infinite;
+    opacity: 0.8;
+}
+
+@keyframes moonGlow {
+    0%, 100% { 
+        box-shadow: 
+            0 0 40px rgba(245, 245, 220, 0.3),
+            inset -20px -20px 0 rgba(0, 0, 0, 0.2);
+    }
+    50% { 
+        box-shadow: 
+            0 0 60px rgba(245, 245, 220, 0.5),
+            inset -20px -20px 0 rgba(0, 0, 0, 0.3);
+    }
+}
+
+/* Rameau de vigne */
+.vine-branch {
+    position: absolute;
+    bottom: 10%;
+    left: 10%;
+    width: 200px;
+    height: 300px;
+    opacity: 0.7;
+    animation: vineSway 12s ease-in-out infinite;
+    z-index: 1;
+}
+
+@keyframes vineSway {
+    0%, 100% { transform: rotate(-2deg) translateY(0); }
+    50% { transform: rotate(2deg) translateY(-10px); }
+}
+
+.vine-stem {
+    stroke-dasharray: 5, 5;
+    animation: vineGrow 3s ease-in infinite;
+}
+
+@keyframes vineGrow {
+    0% { stroke-dashoffset: 0; }
+    100% { stroke-dashoffset: 20; }
+}
+
+.grape {
+    animation: grapePulse 4s ease-in-out infinite;
+}
+
+.grape:nth-child(2) { animation-delay: 0s; }
+.grape:nth-child(3) { animation-delay: 0.5s; }
+.grape:nth-child(4) { animation-delay: 1s; }
+.grape:nth-child(5) { animation-delay: 1.5s; }
+
+@keyframes grapePulse {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.1); }
+}
+
+.vine-leaf {
+    animation: leafRustle 6s ease-in-out infinite;
+}
+
+@keyframes leafRustle {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-5deg); }
+    75% { transform: rotate(5deg); }
+}
+
+/* Container principal */
+.container {
+    position: relative;
+    z-index: 10;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Écran de démarrage */
+#screen-start {
+    text-align: center;
+    animation: fadeIn 1s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.gaia-orb {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #4a7c59, #2d5016, #1a3d0f);
+    box-shadow: 
+        0 0 60px rgba(74, 124, 89, 0.4),
+        inset -10px -10px 0 rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    margin-bottom: 40px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.gaia-orb::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(74, 124, 89, 0.3), transparent);
+    animation: orbPulse 3s ease-in-out infinite;
+}
+
+@keyframes orbPulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+.gaia-orb:hover {
+    transform: scale(1.05);
+    box-shadow: 
+        0 0 80px rgba(74, 124, 89, 0.6),
+        inset -10px -10px 0 rgba(0, 0, 0, 0.3);
+}
+
+.orb-text {
+    font-family: 'Cinzel', serif;
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #E8DCC4;
+    letter-spacing: 3px;
+    position: relative;
+    z-index: 1;
+}
+
+.subtitle {
+    font-size: 1.2em;
+    color: #8b8b7a;
+    font-style: italic;
+    margin-top: 20px;
+}
+
+.gold {
+    color: #D4AF37;
+}
+
+/* Écran recommandations */
+#screen-recommandations {
+    width: 90%;
+    max-width: 800px;
+    animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.recommandations-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.recommandations-header h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 2.5em;
+    margin-bottom: 15px;
+}
+
+.moment-info {
+    font-size: 1.1em;
+    color: #8b8b7a;
+    font-style: italic;
+}
+
+.recommandations-content {
+    background: rgba(26, 26, 46, 0.6);
+    border: 1px solid rgba(74, 124, 89, 0.3);
+    border-radius: 10px;
+    padding: 30px;
+    margin-bottom: 30px;
+    backdrop-filter: blur(10px);
+}
+
+.recommandation-section {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(74, 124, 89, 0.2);
+}
+
+.recommandation-section:last-child {
+    border-bottom: none;
+}
+
+.recommandation-section h2 {
+    font-family: 'Cinzel', serif;
+    font-size: 1.8em;
+    color: #D4AF37;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.recommandation-item {
+    background: rgba(10, 10, 15, 0.5);
+    padding: 15px;
+    margin-bottom: 10px;
+    border-left: 3px solid #4a7c59;
+    border-radius: 5px;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.recommandation-item:hover {
+    transform: translateX(5px);
+    background: rgba(10, 10, 15, 0.7);
+}
+
+.recommandation-item h3 {
+    color: #E8DCC4;
+    margin-bottom: 8px;
+    font-size: 1.2em;
+}
+
+.recommandation-item p {
+    color: #8b8b7a;
+    font-size: 0.95em;
+    line-height: 1.6;
+}
+
+.recommandation-item .raison {
+    color: #4a7c59;
+    font-style: italic;
+    margin-top: 5px;
+}
+
+.dicton-item {
+    background: rgba(212, 175, 55, 0.1);
+    border-left: 3px solid #D4AF37;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-style: italic;
+    color: #E8DCC4;
+    text-align: center;
+}
+
+/* Boutons */
+.btn-group {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.btn-primary, .btn-discrete {
+    padding: 12px 30px;
+    font-family: 'Cinzel', serif;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background: #4a7c59;
+    color: #E8DCC4;
+    box-shadow: 0 4px 15px rgba(74, 124, 89, 0.3);
+}
+
+.btn-primary:hover {
+    background: #5a8c69;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(74, 124, 89, 0.5);
+}
+
+.btn-discrete {
+    background: transparent;
+    color: #8b8b7a;
+    border: 1px solid rgba(139, 139, 122, 0.3);
+}
+
+.btn-discrete:hover {
+    color: #E8DCC4;
+    border-color: rgba(139, 139, 122, 0.6);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .moon {
+        width: 80px;
+        height: 80px;
+        top: 10%;
+        right: 10%;
+    }
+    
+    .vine-branch {
+        width: 150px;
+        height: 200px;
+        bottom: 5%;
+        left: 5%;
+    }
+    
+    .recommandations-header h1 {
+        font-size: 2em;
+    }
+    
+    .recommandations-content {
+        padding: 20px;
+    }
+}
+
+/* Loading */
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: #8b8b7a;
+    font-size: 1.2em;
+}
+
+.loading::after {
+    content: '...';
+    animation: dots 1.5s steps(4, end) infinite;
+}
+
+@keyframes dots {
+    0%, 20% { content: '.'; }
+    40% { content: '..'; }
+    60%, 100% { content: '...'; }
+}
+
