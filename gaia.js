@@ -6,41 +6,38 @@ let profilArcana = null;
 
 // Vérifier profil Arcana avant de démarrer
 function checkProfilArcana() {
-    // Vérifier localStorage pour profil Arcana
-    const profilArcanaStr = localStorage.getItem('arcana_profil');
-    const scoresArcanaStr = localStorage.getItem('arcana_scores');
+    // 1. Vérifier paramètres URL (si profil passé depuis Arcana)
+    const urlParams = new URLSearchParams(window.location.search);
+    const profilFromUrl = urlParams.get('profil');
     
-    if (profilArcanaStr && scoresArcanaStr) {
-        // Profil Arcana trouvé
+    if (profilFromUrl) {
+        try {
+            profilArcana = JSON.parse(decodeURIComponent(profilFromUrl));
+            localStorage.setItem('arcana_profil_gaia', JSON.stringify(profilArcana));
+            document.getElementById('profil-status').textContent = `✅ Profil Arcana détecté: ${profilArcana.element_dominant} / ${profilArcana.chakra_dominant}`;
+            startGaia();
+            return;
+        } catch (e) {
+            console.error('Erreur parsing profil URL:', e);
+        }
+    }
+    
+    // 2. Vérifier localStorage pour profil Arcana
+    const profilArcanaStr = localStorage.getItem('arcana_profil_gaia');
+    
+    if (profilArcanaStr) {
         try {
             profilArcana = JSON.parse(profilArcanaStr);
-            const scores = JSON.parse(scoresArcanaStr);
-            
-            // Extraire dominantes depuis scores Arcana
-            const elementDominant = extraireElementDominant(scores);
-            const chakraDominant = extraireChakraDominant(scores);
-            const solidePlatonDominant = extraireSolidePlatonDominant(scores);
-            
-            profilArcana = {
-                element_dominant: elementDominant,
-                chakra_dominant: chakraDominant,
-                solide_platon_dominant: solidePlatonDominant
-            };
-            
-            // Afficher statut
-            document.getElementById('profil-status').textContent = `✅ Profil détecté: ${elementDominant} / ${chakraDominant}`;
-            
-            // Démarrer GAIA avec profil
+            document.getElementById('profil-status').textContent = `✅ Profil détecté: ${profilArcana.element_dominant} / ${profilArcana.chakra_dominant}`;
             startGaia();
-            
+            return;
         } catch (e) {
-            console.error('Erreur parsing profil Arcana:', e);
-            showNoProfil();
+            console.error('Erreur parsing profil localStorage:', e);
         }
-    } else {
-        // Pas de profil Arcana
-        showNoProfil();
     }
+    
+    // 3. Pas de profil Arcana trouvé
+    showNoProfil();
 }
 
 // Extraire élément dominant depuis scores Arcana
