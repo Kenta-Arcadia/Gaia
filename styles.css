@@ -202,6 +202,33 @@ body {
     margin-top: 20px;
 }
 
+.subtitle-small {
+    font-size: 0.9em;
+    color: #4a7c59;
+    margin-top: 10px;
+    font-style: italic;
+}
+
+.no-profil-message {
+    text-align: center;
+    padding: 40px;
+    background: rgba(26, 26, 46, 0.6);
+    border: 1px solid rgba(74, 124, 89, 0.3);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    max-width: 600px;
+}
+
+.no-profil-message h2 {
+    margin-bottom: 20px;
+}
+
+.no-profil-message p {
+    color: #E8DCC4;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
 .gold {
     color: #D4AF37;
 }

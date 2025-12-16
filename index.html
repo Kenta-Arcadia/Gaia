@@ -43,10 +43,22 @@
 
     <div class="container">
         <div id="screen-start">
-            <div class="gaia-orb" onclick="startGaia()">
+            <div class="gaia-orb" onclick="checkProfilArcana()">
                 <span class="gold orb-text">GAIA</span>
             </div>
             <p class="subtitle">Harmonie biodynamique pour votre vignoble</p>
+            <p class="subtitle-small" id="profil-status"></p>
+        </div>
+        
+        <div id="screen-no-profil" style="display: none;">
+            <div class="no-profil-message">
+                <h2 class="gold">🌱 Découvrez d'abord votre profil</h2>
+                <p>Pour recevoir des recommandations biodynamiques personnalisées, faites d'abord le parcours de découverte Arcana.</p>
+                <div class="btn-group">
+                    <button class="btn-primary" onclick="window.location.href='https://kenta-arcadia.github.io/arcana-demo/'">Faire le parcours Arcana</button>
+                    <button class="btn-discrete" onclick="backToStart()">← Retour</button>
+                </div>
+            </div>
         </div>
         
         <div id="screen-recommandations" style="display: none;">

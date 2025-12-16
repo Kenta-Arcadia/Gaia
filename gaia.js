@@ -1,11 +1,97 @@
 // GAIA - Application Biodynamie pour Vignerons
-// Intégration avec harmonisation_arcana.py
+// Intégration avec Arcana (profil) → GAIA (recommandations)
 
 let currentData = null;
+let profilArcana = null;
 
-// Démarrer GAIA
+// Vérifier profil Arcana avant de démarrer
+function checkProfilArcana() {
+    // Vérifier localStorage pour profil Arcana
+    const profilArcanaStr = localStorage.getItem('arcana_profil');
+    const scoresArcanaStr = localStorage.getItem('arcana_scores');
+    
+    if (profilArcanaStr && scoresArcanaStr) {
+        // Profil Arcana trouvé
+        try {
+            profilArcana = JSON.parse(profilArcanaStr);
+            const scores = JSON.parse(scoresArcanaStr);
+            
+            // Extraire dominantes depuis scores Arcana
+            const elementDominant = extraireElementDominant(scores);
+            const chakraDominant = extraireChakraDominant(scores);
+            const solidePlatonDominant = extraireSolidePlatonDominant(scores);
+            
+            profilArcana = {
+                element_dominant: elementDominant,
+                chakra_dominant: chakraDominant,
+                solide_platon_dominant: solidePlatonDominant
+            };
+            
+            // Afficher statut
+            document.getElementById('profil-status').textContent = `✅ Profil détecté: ${elementDominant} / ${chakraDominant}`;
+            
+            // Démarrer GAIA avec profil
+            startGaia();
+            
+        } catch (e) {
+            console.error('Erreur parsing profil Arcana:', e);
+            showNoProfil();
+        }
+    } else {
+        // Pas de profil Arcana
+        showNoProfil();
+    }
+}
+
+// Extraire élément dominant depuis scores Arcana
+function extraireElementDominant(scores) {
+    const elements = {
+        'element_terre': scores.element_terre?.total || 0,
+        'element_eau': scores.element_eau?.total || 0,
+        'element_feu': scores.element_feu?.total || 0,
+        'element_air': scores.element_air?.total || 0,
+        'element_metal': scores.element_metal?.total || 0
+    };
+    
+    const maxElement = Object.entries(elements).reduce((a, b) => a[1] > b[1] ? a : b);
+    return maxElement[0].replace('element_', '') || 'terre';
+}
+
+// Extraire chakra dominant depuis scores Arcana
+function extraireChakraDominant(scores) {
+    const chakras = {
+        'chakra_racine': scores.chakra_racine?.total || 0,
+        'chakra_sacre': scores.chakra_sacre?.total || 0,
+        'chakra_plexus_solaire': scores.chakra_plexus_solaire?.total || 0,
+        'chakra_coeur': scores.chakra_coeur?.total || 0,
+        'chakra_gorge': scores.chakra_gorge?.total || 0,
+        'chakra_3e_oeil': scores.chakra_3e_oeil?.total || 0,
+        'chakra_couronne': scores.chakra_couronne?.total || 0
+    };
+    
+    const maxChakra = Object.entries(chakras).reduce((a, b) => a[1] > b[1] ? a : b);
+    return maxChakra[0].replace('chakra_', '').replace('_', '') || 'racine';
+}
+
+// Extraire solide Platon dominant depuis scores Arcana
+function extraireSolidePlatonDominant(scores) {
+    if (scores.solides_platon) {
+        const maxSolide = Object.entries(scores.solides_platon).reduce((a, b) => a[1] > b[1] ? a : b);
+        return maxSolide[0] || 'cube';
+    }
+    return 'cube';
+}
+
+// Afficher écran "pas de profil"
+function showNoProfil() {
+    document.getElementById('screen-start').style.display = 'none';
+    document.getElementById('screen-no-profil').style.display = 'block';
+}
+
+// Démarrer GAIA avec profil
 function startGaia() {
     document.getElementById('screen-start').style.display = 'none';
+    document.getElementById('screen-no-profil').style.display = 'none';
     document.getElementById('screen-recommandations').style.display = 'block';
     
     loadRecommandations();
@@ -42,7 +128,7 @@ async function loadRecommandations() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
+            body: JSON.stringify(profilArcana || {
                 element_dominant: 'terre',
                 chakra_dominant: 'racine',
                 solide_platon_dominant: 'cube'

@@ -11,10 +11,17 @@ Application web **100% locale et offline** pour recommandations biodynamiques pe
 
 ## 🚀 Démarrage rapide
 
+### ⚠️ Important : Profil Arcana requis
+
+**GAIA nécessite un profil Arcana pour fonctionner.**
+
+1. **Faites d'abord le parcours Arcana** : https://kenta-arcadia.github.io/arcana-demo/
+2. **Puis revenez sur GAIA** : Votre profil sera automatiquement détecté
+
 ### Option 1 : GitHub Pages (recommandé)
 
 L'application est accessible directement via GitHub Pages :
-**https://kenta-arcadia.github.io/gaia-demo/**
+**https://kenta-arcadia.github.io/Gaia/**
 
 ### Option 2 : Serveur local
 
